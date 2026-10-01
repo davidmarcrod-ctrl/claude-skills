@@ -1,0 +1,28 @@
+#!/bin/zsh
+# sync-claude          -> baja cambios de skills y ae-mcp (y recompila ae-mcp si hace falta)
+# sync-claude push "m" -> sube los cambios locales de ambos repos con el mensaje "m"
+export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+REPOS=("$HOME/.claude/skills" "$HOME/code/ae-mcp")
+
+if [[ "$1" == "push" ]]; then
+  msg="${2:-Actualización desde $(scutil --get ComputerName)}"
+  for r in $REPOS; do
+    echo "== ${r:t}"
+    if [[ -z "$(git -C "$r" status --porcelain)" ]]; then echo "Sin cambios"; continue; fi
+    git -C "$r" add -A && git -C "$r" commit -qm "$msg" && git -C "$r" push -q && echo "Subido ✓"
+  done
+  exit
+fi
+
+for r in $REPOS; do
+  echo "== ${r:t}"
+  [[ -n "$(git -C "$r" status --porcelain)" ]] && echo "⚠️  Tienes cambios sin subir aquí (usa: sync-claude push)"
+  before=$(git -C "$r" rev-parse HEAD)
+  git -C "$r" pull --ff-only -q || { echo "❌ No se pudo actualizar ${r:t}"; continue; }
+  after=$(git -C "$r" rev-parse HEAD)
+  if [[ "$before" == "$after" ]]; then echo "Ya estaba al día"; continue; fi
+  echo "Actualizado ✓"
+  if [[ "$r" == *ae-mcp ]]; then
+    (cd "$r" && npm install --silent && npm run build --silent) && echo "Recompilado ✓ → reinicia Claude Desktop (Cmd+Q)"
+  fi
+done
