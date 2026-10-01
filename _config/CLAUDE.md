@@ -12,7 +12,8 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 - Mantén al día las secciones «Estado actual» y «Pendientes», y añade una línea al «Registro de sesiones»
   (fecha, ordenador, qué se hizo).
 - Sé conciso: es un documento de referencia, no una transcripción.
-- Si la carpeta de un proyecto no tiene `CLAUDE.md`, ofrece crearlo.
+- Si la carpeta de un proyecto no tiene `CLAUDE.md`, ofrece crearlo con la skill `ae-proyecto`.
+- Para proyectos nuevos de After Effects, usa la skill `ae-proyecto`.
 
 ## Herramientas
 
