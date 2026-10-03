@@ -15,6 +15,27 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 - Si la carpeta de un proyecto no tiene `CLAUDE.md`, ofrece crearlo con la skill `ae-proyecto`.
 - Para proyectos nuevos de After Effects, usa la skill `ae-proyecto`.
 
+## Versionado de los `.aep` (todos los proyectos)
+
+- Guardar versión nueva `_NN` **solo antes de un parche por script** (`run_script` que toca varias capas):
+  si falla a mitad, deja cambios a medias. Los cambios pequeños con herramientas sueltas no necesitan versión.
+- En `00 - AFTER` quedan solo la **vigente** y los **hitos aprobados**. Las intermedias se mueven a
+  `00 - AFTER/_OLD` (no se borran). Hacer la limpieza al cerrar cada tanda de cambios y anotar en el
+  `CLAUDE.md` del proyecto qué versión es cada hito.
+
+## Configuración de After Effects por ordenador
+
+Las preferencias de AE son de cada Mac (están en `~/Library/Preferences/Adobe/After Effects/<versión>/`).
+Si en un ordenador no consta como revisada, ofrece el chequeo: hardware (`sysctl`, `system_profiler`),
+preferencias (caché de disco, Multi-Frame Rendering, auto-save), GPU del proyecto (`app.project.gpuAccelType`:
+Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con AE abierto: se sobrescriben.
+
+- **MacBook Pro M1 Max, 32 GB** (revisado el 03/10/2026, AE 26.5). GPU Metal, MFR, aceleración por
+  hardware y caché en reposo, bien. **Problema:** la caché de disco estaba en `PHILIPS Cache AE` (USB, ~39 MB/s).
+  Hecho (03/10): caché en `/Library/Caches/AE Disk Cache` (SSD interno, ~4 GB/s), 80 GB.
+  RAM reservada para otras apps: 6 GB (correcto). Este Mac queda optimizado.
+- **El otro Mac:** sin revisar.
+
 ## Herramientas
 
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).

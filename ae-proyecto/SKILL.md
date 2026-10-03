@@ -43,8 +43,11 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
 
 ## Convenciones
 
-- Versiona los `.aep` con sufijo `_NN`; no sobrescribas una versión a la que el usuario pueda querer volver:
-  ante un cambio grande, guarda como la versión siguiente.
+- Versiona los `.aep` con sufijo `_NN`; no sobrescribas una versión a la que el usuario pueda querer volver.
+  Guarda versión nueva **solo antes de un parche por script** (si falla a mitad, deja cambios a medias);
+  los cambios pequeños con herramientas sueltas no la necesitan.
+- En `00 - AFTER` quedan solo la vigente y los hitos aprobados; las intermedias van a `00 - AFTER/_OLD`
+  (no se borran). Limpia al cerrar cada tanda de cambios y apunta los hitos en el `CLAUDE.md`.
 - Los scripts del proyecto van en `03 - SCRIPTS`, con una cabecera que explique qué hacen y si son idempotentes
   o de un solo uso.
 - Durante el trabajo, mantén el `CLAUDE.md` al día (estado, decisiones, pendientes, registro de sesiones).

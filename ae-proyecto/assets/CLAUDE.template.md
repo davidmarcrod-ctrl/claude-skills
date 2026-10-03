@@ -21,7 +21,7 @@ Raíz: `{{RUTA}}`
 
 | Carpeta | Contenido |
 |---|---|
-| `00 - AFTER` | Proyectos `.aep` versionados: `{{PREFIJO}}_NN.aep` (la más alta es la vigente) |
+| `00 - AFTER` | Proyectos `.aep` versionados: `{{PREFIJO}}_NN.aep` (la más alta es la vigente; aquí solo la vigente y los hitos, el resto en `_OLD`) |
 | `01 - AI` | Illustrator importado en AE |
 | `02 - TEXTURAS` | Texturas e imágenes |
 | `03 - SCRIPTS` | ExtendScript del proyecto (para `ae-mcp run_script`) |
