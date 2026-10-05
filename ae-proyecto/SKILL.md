@@ -28,7 +28,10 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
    - Crea un proyecto nuevo con `run_script` (`app.newProject()`), crea la comp principal con el formato del brief
      (`create_composition`), ejecuta `project_bins.jsx` con `run_script` y guárdalo como
      `00 - AFTER/{{PREFIJO}}_01.aep` (`save_project`).
-6. **Resumen final**: ruta creada, qué falta del brief y recordatorio de abrir las sesiones de Claude Code
+6. **Carpeta de la sesión en la app**: la barra lateral agrupa los chats por carpeta de trabajo. Si la sesión
+   no está ya en la raíz del proyecto, muévela con `ccd_directory` → `change_directory`. No uses grupos personalizados
+   (`ccd_sidebar`): cambian la vista y ocultan las carpetas por proyecto.
+7. **Resumen final**: ruta creada, qué falta del brief y recordatorio de abrir las sesiones de Claude Code
    **en la carpeta del proyecto**.
 
 ## B. Incorporar un proyecto existente (carpeta sin CLAUDE.md)
@@ -40,6 +43,7 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
    (p. ej. formatos que no cuadran). No renombres ni muevas archivos sin preguntar: los `.aep` tienen rutas enlazadas.
 4. Si la estructura de carpetas difiere del estándar, propón la reorganización; no la hagas por tu cuenta.
    Tras reorganizar hace falta revincular el footage dentro de AE.
+5. Si la sesión no está en la carpeta del proyecto, muévela ahí (igual que en A.6).
 
 ## Convenciones
 

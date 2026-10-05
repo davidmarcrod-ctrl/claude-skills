@@ -15,6 +15,14 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 - Si la carpeta de un proyecto no tiene `CLAUDE.md`, ofrece crearlo con la skill `ae-proyecto`.
 - Para proyectos nuevos de After Effects, usa la skill `ae-proyecto`.
 
+## Sesiones de Claude Code (app de escritorio)
+
+- La barra lateral de Code está agrupada **por proyecto**: cada carpeta es la carpeta de trabajo del chat.
+  Por eso, cada proyecto nuevo debe tener su propio chat **en la carpeta del proyecto**. Si un chat
+  arranca en otra carpeta, muévelo con `ccd_directory` → `change_directory` a la raíz del proyecto.
+- **No** uses grupos personalizados (`ccd_sidebar` create_group / move_sessions): cambian la vista a «custom»
+  y ocultan las carpetas por proyecto. Si alguna vez cambia la vista, restáurala con `set_view` group_by `project`.
+
 ## Versionado de los `.aep` (todos los proyectos)
 
 - Guardar versión nueva `_NN` **solo antes de un parche por script** (`run_script` que toca varias capas):
