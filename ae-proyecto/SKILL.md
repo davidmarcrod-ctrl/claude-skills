@@ -17,12 +17,15 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
 1. **Pide lo mínimo** (en una sola pregunta y sin bloquearte si falta algo; lo que falte queda como pendiente):
    cliente, nombre del proyecto, descripción breve, formato de entrega (resolución, fps, aspecto), duración y fecha.
    Comprueba si el cliente ya tiene carpeta (`ls` de la raíz) y reutiliza su nombre exacto.
-2. **Crea las carpetas**: `00 - AFTER`, `01 - AI`, `02 - TEXTURAS`, `03 - SCRIPTS`, `04 - RENDERS`,
-   `05 - GRAFISMO`, `06 - REFES & INSP`, `07 - STORYBOARD`.
+2. **Crea las carpetas**: `00 - AFTER`, `01 - BRUTOS`, `02 - AI & PSD` (con subcarpetas `AI` y `PSD`), `03 - IA`,
+   `04 - FOTOS Y TEXTURAS`, `05 - GRAFISMOS`, `06 - SCRIPTS`, `07 - RENDERS`, `08 - REFES & INSP`, `09 - STORYBOARD`,
+   `10 - EXPORTS`. Ojo: `02 - AI & PSD/AI` es Illustrator; `03 - IA` es inteligencia artificial.
+   Coloca el material recibido donde toque (AI/PSD en `02`, fuentes y logos en `05 - GRAFISMOS`, metraje en `01 - BRUTOS`).
+   Esta estructura rige desde el 08/10/2026; los proyectos anteriores conservan la antigua (no migrarlos sin que se pida).
 3. **CLAUDE.md**: copia `assets/CLAUDE.template.md` en la raíz del proyecto y rellena los `{{...}}`
    (`{{PREFIJO}}` = `Proyecto_Cliente` sin espacios; `{{ORDENADOR}}` sale de `scutil --get ComputerName`).
    Lo desconocido se deja como "pendiente" y se añade a Pendientes.
-4. **Scripts base**: copia `assets/project_bins.jsx` en `03 - SCRIPTS/`.
+4. **Scripts base**: copia `assets/project_bins.jsx` en `06 - SCRIPTS/`.
 5. **Proyecto de AE** (solo si After Effects está abierto y las herramientas `ae-mcp` están disponibles; si no, díselo y sáltalo):
    - Si el proyecto abierto tiene cambios sin guardar, **no lo toques**: pregunta antes.
    - Crea un proyecto nuevo con `run_script` (`app.newProject()`), crea la comp principal con el formato del brief
@@ -52,6 +55,6 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
   los cambios pequeños con herramientas sueltas no la necesitan.
 - En `00 - AFTER` quedan solo la vigente y los hitos aprobados; las intermedias van a `00 - AFTER/_OLD`
   (no se borran). Limpia al cerrar cada tanda de cambios y apunta los hitos en el `CLAUDE.md`.
-- Los scripts del proyecto van en `03 - SCRIPTS`, con una cabecera que explique qué hacen y si son idempotentes
+- Los scripts del proyecto van en `06 - SCRIPTS`, con una cabecera que explique qué hacen y si son idempotentes
   o de un solo uso.
 - Durante el trabajo, mantén el `CLAUDE.md` al día (estado, decisiones, pendientes, registro de sesiones).

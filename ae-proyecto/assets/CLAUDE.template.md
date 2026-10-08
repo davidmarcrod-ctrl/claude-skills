@@ -22,18 +22,21 @@ Raíz: `{{RUTA}}`
 | Carpeta | Contenido |
 |---|---|
 | `00 - AFTER` | Proyectos `.aep` versionados: `{{PREFIJO}}_NN.aep` (la más alta es la vigente; aquí solo la vigente y los hitos, el resto en `_OLD`) |
-| `01 - AI` | Illustrator importado en AE |
-| `02 - TEXTURAS` | Texturas e imágenes |
-| `03 - SCRIPTS` | ExtendScript del proyecto (para `ae-mcp run_script`) |
-| `04 - RENDERS` | Salidas de render |
-| `05 - GRAFISMO` | Paquetes y material gráfico de origen |
-| `06 - REFES & INSP` | Referencias visuales |
-| `07 - STORYBOARD` | Storyboard / guion |
+| `01 - BRUTOS` | Material en bruto: metraje de cámara, planos recibidos |
+| `02 - AI & PSD` | Archivos de diseño importados en AE: `AI/` (Illustrator) y `PSD/` (Photoshop) |
+| `03 - IA` | Material generado con IA (imágenes, vídeo, Higgsfield…) |
+| `04 - FOTOS Y TEXTURAS` | Fotos, texturas e imágenes |
+| `05 - GRAFISMOS` | Paquetes y material gráfico de origen (fuentes, logos, manuales) |
+| `06 - SCRIPTS` | ExtendScript del proyecto (para `ae-mcp run_script`) |
+| `07 - RENDERS` | Renders de trabajo e intermedios (previos, precomps renderizadas) |
+| `08 - REFES & INSP` | Referencias visuales |
+| `09 - STORYBOARD` | Storyboard / guion |
+| `10 - EXPORTS` | Entregables finales que se envían al cliente |
 
 ## Organización del panel de proyecto en AE
 
 Bins: `00 - FINALES` (comps que se exportan), `01 - COMPOS`, `02 - AI`, `03 - TEXTURAS`, `04 - SOLIDOS & AJUSTES`.
-`03 - SCRIPTS/project_bins.jsx` lo ordena todo y se puede relanzar (rellenar `FINALES`).
+`06 - SCRIPTS/project_bins.jsx` lo ordena todo y se puede relanzar (rellenar `FINALES`).
 
 ## Scripts
 
