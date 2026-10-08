@@ -1,28 +1,48 @@
-// Organiza el panel de proyecto de AE.
-// - Crea las carpetas estándar (NN - NOMBRE) si no existen.
-// - Coloca cada item según su tipo: comps exportables -> FINALES, resto de comps -> COMPOS,
-//   capas de AI -> AI, imágenes de textura -> TEXTURAS, sólidos -> SOLIDOS & AJUSTES.
-// - Borra carpetas antiguas (LEGACY_BINS) solo si quedan vacías.
+// Organiza el panel de proyecto de AE con bins que reflejan la estructura del disco (desde 08/10/2026).
+// - Crea los bins estándar (NN - NOMBRE) si no existen.
+// - Comps exportables (FINALES) -> 00 - FINALES; resto de comps -> 01 - COMPOS.
+// - Footage: va al bin de la carpeta del disco de la que viene (01 - BRUTOS -> 02 - BRUTOS, etc.).
+//   Si viene de otra ruta, se decide por extensión (vídeo -> BRUTOS, ai/psd -> AI & PSD, imagen -> FOTOS Y TEXTURAS).
+// - Carpetas "<x> Layers" (AI/PSD importado como composición) -> 03 - AI & PSD. Sólidos -> 08 - SOLIDOS & AJUSTES.
+// - Borra bins antiguos (LEGACY_BINS) solo si quedan vacíos.
 // Idempotente: se puede relanzar en cualquier momento.
 
-var BINS = ["00 - FINALES", "01 - COMPOS", "02 - AI", "03 - TEXTURAS", "04 - SOLIDOS & AJUSTES"];
+var BINS = ["00 - FINALES", "01 - COMPOS", "02 - BRUTOS", "03 - AI & PSD", "04 - IA",
+            "05 - FOTOS Y TEXTURAS", "06 - GRAFISMOS", "07 - RENDERS", "08 - SOLIDOS & AJUSTES"];
 var FINALES = [];                           // comps que se exportan (rellenar por proyecto)
-var LEGACY_BINS = ["00 FINALES", "01 COMPOS", "02 ILLUSTRATORS", "03 TEXTURAS"];
+var LEGACY_BINS = ["00 FINALES", "01 COMPOS", "02 ILLUSTRATORS", "03 TEXTURAS",
+                   "02 - AI", "03 - TEXTURAS", "04 - SOLIDOS & AJUSTES"];
+
+// Carpeta del disco -> bin
+var DISK_TO_BIN = {
+  "01 - BRUTOS": "02 - BRUTOS", "02 - AI & PSD": "03 - AI & PSD", "03 - IA": "04 - IA",
+  "04 - FOTOS Y TEXTURAS": "05 - FOTOS Y TEXTURAS", "05 - GRAFISMOS": "06 - GRAFISMOS",
+  "07 - RENDERS": "07 - RENDERS", "10 - EXPORTS": "07 - RENDERS"
+};
+var VIDEO = ["mov", "mp4", "mxf", "r3d", "braw", "avi", "m4v", "mkv"];
+var DESIGN = ["ai", "eps", "pdf", "psd"];
+var IMAGE = ["jpg", "jpeg", "png", "tif", "tiff", "exr", "dpx", "webp", "heic"];
 
 var proj = app.project;
 
 function findBin(name) {
   for (var i = 1; i <= proj.numItems; i++) {
     var it = proj.item(i);
-    if (it instanceof FolderItem && it.name === name) return it;
+    if (it instanceof FolderItem && it.name === name && it.parentFolder === proj.rootFolder) return it;
   }
   return null;
 }
 function inArray(a, v) { for (var i = 0; i < a.length; i++) if (a[i] === v) return true; return false; }
 function ext(f) { var m = f.name.match(/\.([^.]+)$/); return m ? m[1].toLowerCase() : ""; }
+function binFromPath(f) {
+  var parts = f.fsName.split("/");
+  for (var i = parts.length - 2; i >= 0; i--) if (DISK_TO_BIN[parts[i]]) return DISK_TO_BIN[parts[i]];
+  return null;
+}
 
 var bins = {};
 for (var b = 0; b < BINS.length; b++) bins[BINS[b]] = findBin(BINS[b]) || proj.items.addFolder(BINS[b]);
+function isBin(it) { for (var k in bins) if (bins[k] === it) return true; return false; }
 
 // Snapshot: proj.item() indices shift as items move.
 var items = [];
@@ -36,18 +56,24 @@ function moveTo(it, binName) {
 for (var n = 0; n < items.length; n++) {
   var it = items[n];
   if (it instanceof CompItem) {
+    // Las comps de un AI/PSD importado se quedan junto a su carpeta "Layers"
+    if (it.parentFolder === bins["03 - AI & PSD"]) continue;
     moveTo(it, inArray(FINALES, it.name) ? "00 - FINALES" : "01 - COMPOS");
   } else if (it instanceof FolderItem) {
-    // Carpeta "<x> Layers" que crea la importación de un AI como composición
-    if (/ Layers$/.test(it.name)) moveTo(it, "02 - AI");
+    if (isBin(it)) continue;
+    if (/ Layers$/.test(it.name)) moveTo(it, "03 - AI & PSD");
   } else if (it instanceof FootageItem) {
     var src = it.mainSource;
-    if (src instanceof SolidSource) { moveTo(it, "04 - SOLIDOS & AJUSTES"); continue; }
+    if (src instanceof SolidSource) { moveTo(it, "08 - SOLIDOS & AJUSTES"); continue; }
     if (!src.file) continue;
-    var e = ext(src.file);
-    // Las capas de AI ya viajan dentro de su carpeta "Layers"
-    if ((e === "ai" || e === "eps" || e === "pdf") && !/ Layers$/.test(it.parentFolder.name)) moveTo(it, "02 - AI");
-    else if (inArray(["jpg", "jpeg", "png", "tif", "tiff", "psd", "exr"], e)) moveTo(it, "03 - TEXTURAS");
+    if (/ Layers$/.test(it.parentFolder.name)) continue;   // capas de AI/PSD: viajan en su carpeta
+    var target = binFromPath(src.file), e = ext(src.file);
+    if (!target) {
+      if (inArray(VIDEO, e)) target = "02 - BRUTOS";
+      else if (inArray(DESIGN, e)) target = "03 - AI & PSD";
+      else if (inArray(IMAGE, e)) target = "05 - FOTOS Y TEXTURAS";
+    }
+    if (target) moveTo(it, target);
   }
 }
 

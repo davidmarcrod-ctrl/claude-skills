@@ -35,7 +35,10 @@ Raíz: `{{RUTA}}`
 
 ## Organización del panel de proyecto en AE
 
-Bins: `00 - FINALES` (comps que se exportan), `01 - COMPOS`, `02 - AI`, `03 - TEXTURAS`, `04 - SOLIDOS & AJUSTES`.
+Bins: `00 - FINALES` (comps que se exportan), `01 - COMPOS`, `02 - BRUTOS`, `03 - AI & PSD`, `04 - IA`,
+`05 - FOTOS Y TEXTURAS`, `06 - GRAFISMOS`, `07 - RENDERS`, `08 - SOLIDOS & AJUSTES`.
+Cada archivo importado va al bin de la carpeta del disco de la que viene (p. ej. `01 - BRUTOS` → bin `02 - BRUTOS`);
+si viene de otra ruta, se decide por extensión.
 `06 - SCRIPTS/project_bins.jsx` lo ordena todo y se puede relanzar (rellenar `FINALES`).
 
 ## Scripts
