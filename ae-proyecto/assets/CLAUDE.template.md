@@ -26,21 +26,22 @@ Raíz: `{{RUTA}}`
 | `02 - AI & PSD` | Archivos de diseño importados en AE: `AI/` (Illustrator) y `PSD/` (Photoshop) |
 | `03 - IA` | Material generado con IA (imágenes, vídeo, Higgsfield…) |
 | `04 - FOTOS Y TEXTURAS` | Fotos, texturas e imágenes |
-| `05 - GRAFISMOS` | Paquetes y material gráfico de origen (fuentes, logos, manuales) |
-| `06 - SCRIPTS` | ExtendScript del proyecto (para `ae-mcp run_script`) |
-| `07 - RENDERS` | Renders de trabajo e intermedios (previos, precomps renderizadas) |
-| `08 - REFES & INSP` | Referencias visuales |
-| `09 - STORYBOARD` | Storyboard / guion |
-| `10 - EXPORTS` | Entregables finales que se envían al cliente |
+| `05 - VIDEOS` | Vídeos que no son brutos de cámara: stock, material de apoyo, piezas de campaña |
+| `06 - GRAFISMOS` | Paquetes y material gráfico de origen (fuentes, logos, manuales) |
+| `07 - SCRIPTS` | ExtendScript del proyecto (para `ae-mcp run_script`) |
+| `08 - RENDERS` | Renders de trabajo e intermedios (previos, precomps renderizadas) |
+| `09 - REFES & INSP` | Referencias visuales |
+| `10 - PDFS & DOCS` | PDFs y documentos: storyboard, guion, brief, dirección de arte, presentaciones |
+| `11 - EXPORTS` | Entregables finales que se envían al cliente |
 
 ## Organización del panel de proyecto en AE
 
 Bins: `00 - BRUTOS`, `01 - FINALES` (comps que se exportan), `02 - COMPOS`, `03 - AI & PSD`, `04 - IA`,
-`05 - FOTOS Y TEXTURAS`, `06 - GRAFISMOS`, `07 - RENDERS`, `08 - SOLIDOS & AJUSTES`.
+`05 - FOTOS Y TEXTURAS`, `06 - VIDEOS`, `07 - GRAFISMOS`, `08 - RENDERS`, `09 - SOLIDOS & AJUSTES`.
 Cada archivo importado va al bin de la carpeta del disco de la que viene (p. ej. `01 - BRUTOS` → bin `00 - BRUTOS`);
 si viene de otra ruta, se decide por extensión.
 El orden de los tres primeros bins es fijo: **BRUTOS, FINALES, COMPOS**; después el resto.
-`06 - SCRIPTS/project_bins.jsx` lo ordena todo y se puede relanzar (rellenar `FINALES`).
+`07 - SCRIPTS/project_bins.jsx` lo ordena todo y se puede relanzar (rellenar `FINALES`).
 
 ## Scripts
 

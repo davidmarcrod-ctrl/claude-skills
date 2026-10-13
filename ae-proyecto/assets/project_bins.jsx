@@ -5,25 +5,29 @@
 //   (las comps de un AI/PSD importado se quedan con él en 03 - AI & PSD).
 // - Footage: va al bin de la carpeta del disco de la que viene (01 - BRUTOS -> 00 - BRUTOS, etc.).
 //   Si viene de otra ruta, se decide por extensión (vídeo -> BRUTOS, ai/psd -> AI & PSD, imagen -> FOTOS Y TEXTURAS).
-// - Carpetas "<x> Layers" (AI/PSD importado como composición) -> 03 - AI & PSD. Sólidos -> 08 - SOLIDOS & AJUSTES.
-// - Content-Aware Fill: lo que viene de una carpeta "Fills" del disco no se toca; el bin "Fills" que crea AE va a 07 - RENDERS.
+// - Carpetas "<x> Layers" (AI/PSD importado como composición) -> 03 - AI & PSD. Sólidos -> 09 - SOLIDOS & AJUSTES.
+// - Content-Aware Fill: lo que viene de una carpeta "Fills" del disco no se toca; el bin "Fills" que crea AE va a 08 - RENDERS.
+// - Estructura del 13/10/2026 (con VIDEOS): también reconoce las carpetas de disco y bins de la del 08/10.
 // - Bins con nombre antiguo (RENAMES) se renombran conservando su contenido.
 // - Borra bins antiguos (LEGACY_BINS) solo si quedan vacíos.
 // Idempotente: se puede relanzar en cualquier momento.
 // Simulación: con $.global.BINS_DRY = true antes de ejecutarlo, solo informa de lo que movería (no toca nada).
 
 var BINS = ["00 - BRUTOS", "01 - FINALES", "02 - COMPOS", "03 - AI & PSD", "04 - IA",
-            "05 - FOTOS Y TEXTURAS", "06 - GRAFISMOS", "07 - RENDERS", "08 - SOLIDOS & AJUSTES"];
+            "05 - FOTOS Y TEXTURAS", "06 - VIDEOS", "07 - GRAFISMOS", "08 - RENDERS", "09 - SOLIDOS & AJUSTES"];
 var FINALES = [];                           // comps que se exportan (rellenar por proyecto)
 var LEGACY_BINS = ["00 FINALES", "01 COMPOS", "02 ILLUSTRATORS", "03 TEXTURAS",
                    "02 - AI", "03 - TEXTURAS", "04 - SOLIDOS & AJUSTES", "Solids"];
-var RENAMES = { "00 - FINALES": "01 - FINALES", "01 - COMPOS": "02 - COMPOS", "02 - BRUTOS": "00 - BRUTOS" };
+var RENAMES = { "00 - FINALES": "01 - FINALES", "01 - COMPOS": "02 - COMPOS", "02 - BRUTOS": "00 - BRUTOS",
+                "06 - GRAFISMOS": "07 - GRAFISMOS", "07 - RENDERS": "08 - RENDERS", "08 - SOLIDOS & AJUSTES": "09 - SOLIDOS & AJUSTES" };
 
 // Carpeta del disco -> bin
 var DISK_TO_BIN = {
   "01 - BRUTOS": "00 - BRUTOS", "02 - AI & PSD": "03 - AI & PSD", "03 - IA": "04 - IA",
-  "04 - FOTOS Y TEXTURAS": "05 - FOTOS Y TEXTURAS", "05 - GRAFISMOS": "06 - GRAFISMOS",
-  "07 - RENDERS": "07 - RENDERS", "10 - EXPORTS": "07 - RENDERS"
+  "04 - FOTOS Y TEXTURAS": "05 - FOTOS Y TEXTURAS", "05 - VIDEOS": "06 - VIDEOS", "06 - GRAFISMOS": "07 - GRAFISMOS",
+  "08 - RENDERS": "08 - RENDERS", "11 - EXPORTS": "08 - RENDERS",
+  // estructura del 08/10 (sin VIDEOS)
+  "05 - GRAFISMOS": "07 - GRAFISMOS", "07 - RENDERS": "08 - RENDERS", "10 - EXPORTS": "08 - RENDERS"
 };
 var VIDEO = ["mov", "mp4", "mxf", "r3d", "braw", "avi", "m4v", "mkv"];
 var DESIGN = ["ai", "eps", "pdf", "psd"];
@@ -81,11 +85,11 @@ for (var n = 0; n < items.length; n++) {
     moveTo(it, inArray(FINALES, it.name) ? "01 - FINALES" : "02 - COMPOS");
   } else if (it instanceof FolderItem) {
     if (isBin(it)) continue;
-    if (it.name === "Fills" && it.parentFolder === proj.rootFolder) { moveTo(it, "07 - RENDERS"); continue; }
+    if (it.name === "Fills" && it.parentFolder === proj.rootFolder) { moveTo(it, "08 - RENDERS"); continue; }
     if (/ Layers$/.test(it.name)) moveTo(it, "03 - AI & PSD");
   } else if (it instanceof FootageItem) {
     var src = it.mainSource;
-    if (src instanceof SolidSource) { moveTo(it, "08 - SOLIDOS & AJUSTES"); continue; }
+    if (src instanceof SolidSource) { moveTo(it, "09 - SOLIDOS & AJUSTES"); continue; }
     if (!src.file) continue;
     if (/\/Fills\//.test(src.file.fsName)) continue;   // Content-Aware Fill: se queda con su carpeta
     if (/ Layers$/.test(it.parentFolder.name)) continue;   // capas de AI/PSD: viajan en su carpeta
