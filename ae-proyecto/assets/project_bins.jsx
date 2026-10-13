@@ -6,9 +6,11 @@
 // - Footage: va al bin de la carpeta del disco de la que viene (01 - BRUTOS -> 00 - BRUTOS, etc.).
 //   Si viene de otra ruta, se decide por extensión (vídeo -> BRUTOS, ai/psd -> AI & PSD, imagen -> FOTOS Y TEXTURAS).
 // - Carpetas "<x> Layers" (AI/PSD importado como composición) -> 03 - AI & PSD. Sólidos -> 08 - SOLIDOS & AJUSTES.
+// - Content-Aware Fill: lo que viene de una carpeta "Fills" del disco no se toca; el bin "Fills" que crea AE va a 07 - RENDERS.
 // - Bins con nombre antiguo (RENAMES) se renombran conservando su contenido.
 // - Borra bins antiguos (LEGACY_BINS) solo si quedan vacíos.
 // Idempotente: se puede relanzar en cualquier momento.
+// Simulación: con $.global.BINS_DRY = true antes de ejecutarlo, solo informa de lo que movería (no toca nada).
 
 var BINS = ["00 - BRUTOS", "01 - FINALES", "02 - COMPOS", "03 - AI & PSD", "04 - IA",
             "05 - FOTOS Y TEXTURAS", "06 - GRAFISMOS", "07 - RENDERS", "08 - SOLIDOS & AJUSTES"];
@@ -27,6 +29,7 @@ var VIDEO = ["mov", "mp4", "mxf", "r3d", "braw", "avi", "m4v", "mkv"];
 var DESIGN = ["ai", "eps", "pdf", "psd"];
 var IMAGE = ["jpg", "jpeg", "png", "tif", "tiff", "exr", "dpx", "webp", "heic"];
 
+var DRY = ($.global.BINS_DRY === true);
 var proj = app.project;
 
 function findBin(name) {
@@ -48,12 +51,12 @@ function binFromPath(f) {
 var renamed = [], tmp = [];
 for (var from in RENAMES) {
   var bf = findBin(from);
-  if (bf && !findBin(RENAMES[from])) { bf.name = "__tmp__" + RENAMES[from]; tmp.push(bf); renamed.push(from + " -> " + RENAMES[from]); }
+  if (bf && !findBin(RENAMES[from]) && !DRY) { bf.name = "__tmp__" + RENAMES[from]; tmp.push(bf); renamed.push(from + " -> " + RENAMES[from]); }
 }
 for (var t = 0; t < tmp.length; t++) tmp[t].name = tmp[t].name.replace("__tmp__", "");
 
 var bins = {};
-for (var b = 0; b < BINS.length; b++) bins[BINS[b]] = findBin(BINS[b]) || proj.items.addFolder(BINS[b]);
+for (var b = 0; b < BINS.length; b++) bins[BINS[b]] = findBin(BINS[b]) || (DRY ? null : proj.items.addFolder(BINS[b]));
 function findLayersFolder(name) {
   for (var i = 1; i <= proj.numItems; i++) { var it = proj.item(i); if (it instanceof FolderItem && it.name === name) return it; }
   return null;
@@ -66,7 +69,7 @@ for (var i = 1; i <= proj.numItems; i++) items.push(proj.item(i));
 
 var moved = [];
 function moveTo(it, binName) {
-  if (it.parentFolder !== bins[binName]) { it.parentFolder = bins[binName]; moved.push(it.name + " -> " + binName); }
+  if (it.parentFolder !== bins[binName]) { if (!DRY) it.parentFolder = bins[binName]; moved.push(it.name + " -> " + binName); }
 }
 
 for (var n = 0; n < items.length; n++) {
@@ -78,11 +81,13 @@ for (var n = 0; n < items.length; n++) {
     moveTo(it, inArray(FINALES, it.name) ? "01 - FINALES" : "02 - COMPOS");
   } else if (it instanceof FolderItem) {
     if (isBin(it)) continue;
+    if (it.name === "Fills" && it.parentFolder === proj.rootFolder) { moveTo(it, "07 - RENDERS"); continue; }
     if (/ Layers$/.test(it.name)) moveTo(it, "03 - AI & PSD");
   } else if (it instanceof FootageItem) {
     var src = it.mainSource;
     if (src instanceof SolidSource) { moveTo(it, "08 - SOLIDOS & AJUSTES"); continue; }
     if (!src.file) continue;
+    if (/\/Fills\//.test(src.file.fsName)) continue;   // Content-Aware Fill: se queda con su carpeta
     if (/ Layers$/.test(it.parentFolder.name)) continue;   // capas de AI/PSD: viajan en su carpeta
     var target = binFromPath(src.file), e = ext(src.file);
     if (!target) {
@@ -98,8 +103,8 @@ var removed = [], kept = [];
 for (var l = 0; l < LEGACY_BINS.length; l++) {
   var f = findBin(LEGACY_BINS[l]);
   if (!f) continue;
-  if (f.numItems === 0) { f.remove(); removed.push(LEGACY_BINS[l]); }
+  if (f.numItems === 0) { if (!DRY) f.remove(); removed.push(LEGACY_BINS[l]); }
   else kept.push(LEGACY_BINS[l] + " (" + f.numItems + " items)");
 }
 
-return { renamed: renamed, moved: moved, removedBins: removed, keptNotEmpty: kept };
+return { dry: DRY, renamed: renamed, moved: moved, removedBins: removed, keptNotEmpty: kept };
