@@ -79,6 +79,8 @@ function moveTo(it, binName) {
 for (var n = 0; n < items.length; n++) {
   var it = items[n];
   if (it instanceof CompItem) {
+    // FINALES manda: una comp de export se queda en FINALES aunque venga de un AI/PSD importado
+    if (inArray(FINALES, it.name)) { moveTo(it, "01 - FINALES"); continue; }
     // Las comps de un AI/PSD importado se quedan con él (dentro de su carpeta "Layers" o en AI & PSD)
     if (it.parentFolder === bins["03 - AI & PSD"] || / Layers$/.test(it.parentFolder.name)) continue;
     if (findLayersFolder(it.name + " Layers")) { moveTo(it, "03 - AI & PSD"); continue; }
