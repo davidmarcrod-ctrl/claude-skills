@@ -1,5 +1,12 @@
 # Instrucciones globales
 
+## Sobre mí
+
+- Mi fuerte es After Effects y el motion 2D. **Mis conocimientos de Blender y 3D son limitados**: en cualquier
+  trabajo 3D, explícame lo que haces y por qué, en lenguaje claro (qué es un shadow catcher, un pase, una
+  normal, por qué una escala o una luz…). Relaciónalo con su equivalente en AE cuando exista, y dime dónde
+  verlo o tocarlo en Blender si me hace falta.
+
 ## Contexto de proyecto compartido entre ordenadores
 
 Trabajo en dos Mac (sobremesa en la oficina, portátil en casa). Los proyectos viven en el disco externo
