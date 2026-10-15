@@ -1,12 +1,17 @@
 #!/bin/zsh
-# sync-claude          -> baja cambios de skills y ae-mcp (y recompila ae-mcp si hace falta)
-# sync-claude push "m" -> sube los cambios locales de ambos repos con el mensaje "m"
+# sync-claude          -> baja cambios de skills, ae-mcp y blender-mcp (y recompila si hace falta).
+#                         Si a este Mac le falta algún MCP, lo clona, compila y registra solo.
+# sync-claude push "m" -> sube los cambios locales de los tres repos con el mensaje "m"
 export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-REPOS=("$HOME/.claude/skills" "$HOME/code/ae-mcp")
+C="$HOME/.claude/skills/_config"
+GH="https://github.com/davidmarcrod-ctrl"
+MCPS=(ae-mcp blender-mcp)
+REPOS=("$HOME/.claude/skills" "$HOME/code/ae-mcp" "$HOME/code/blender-mcp")
 
 if [[ "$1" == "push" ]]; then
   msg="${2:-Actualización desde $(scutil --get ComputerName)}"
   for r in $REPOS; do
+    [[ -d "$r" ]] || continue
     echo "== ${r:t}"
     if [[ -z "$(git -C "$r" status --porcelain)" ]]; then echo "Sin cambios"; continue; fi
     git -C "$r" add -A && git -C "$r" commit -qm "$msg" && git -C "$r" push -q && echo "Subido ✓"
@@ -14,7 +19,34 @@ if [[ "$1" == "push" ]]; then
   exit
 fi
 
+build() { (cd "$1" && npm install --silent && npm run build --silent) }
+
+# El add-on de Blender solo se puede activar con Blender cerrado (si no, Blender pisa las preferencias al salir).
+blender_addon() {
+  [[ -d "$HOME/code/blender-mcp" && -d /Applications/Blender.app ]] || return
+  local found=("$HOME/Library/Application Support/Blender"/*/extensions/user_default/blender_mcp_bridge(N))
+  (( ${#found} )) && return
+  if pgrep -x Blender >/dev/null; then
+    echo "⚠️  Falta el add-on MCP Bridge en Blender: ciérralo y ejecuta: cd ~/code/blender-mcp && npm run install-addon"
+  else
+    (cd "$HOME/code/blender-mcp" && sh scripts/install-addon.sh >/dev/null 2>&1) && echo "✓ Add-on MCP Bridge instalado en Blender"
+  fi
+}
+
+# Primera vez en este Mac: clonar, compilar y registrar los MCP que falten
+for m in $MCPS; do
+  r="$HOME/code/$m"
+  if [[ ! -d "$r" ]]; then
+    echo "== $m (nuevo en este Mac)"
+    mkdir -p "$HOME/code"
+    { git clone -q "$GH/$m" "$r" && build "$r" && echo "Clonado y compilado ✓ → reinicia Claude (Cmd+Q)"; } || { echo "❌ No se pudo instalar $m"; continue; }
+  fi
+  [[ -f "$r/dist/index.js" ]] && python3 "$C/register-mcp.py" "$m" "$r/dist/index.js" "$(command -v node)"
+done
+blender_addon
+
 for r in $REPOS; do
+  [[ -d "$r" ]] || continue
   echo "== ${r:t}"
   [[ -n "$(git -C "$r" status --porcelain)" ]] && echo "⚠️  Tienes cambios sin subir aquí (usa: sync-claude push)"
   before=$(git -C "$r" rev-parse HEAD)
@@ -22,7 +54,7 @@ for r in $REPOS; do
   after=$(git -C "$r" rev-parse HEAD)
   if [[ "$before" == "$after" ]]; then echo "Ya estaba al día"; continue; fi
   echo "Actualizado ✓"
-  if [[ "$r" == *ae-mcp ]]; then
-    (cd "$r" && npm install --silent && npm run build --silent) && echo "Recompilado ✓ → reinicia Claude Desktop (Cmd+Q)"
+  if [[ -f "$r/package.json" ]]; then
+    build "$r" && echo "Recompilado ✓ → reinicia Claude (Cmd+Q)"
   fi
 done

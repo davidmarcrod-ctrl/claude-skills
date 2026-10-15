@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Deja un Mac listo para trabajar con Claude Code + After Effects.
+# Deja un Mac listo para trabajar con Claude Code + After Effects + Blender.
 # Requisitos previos: repo de skills clonado en ~/.claude/skills y `gh auth login` hecho.
 set -e
 C="$HOME/.claude/skills/_config"
@@ -17,17 +17,17 @@ link "$C/settings.json" ~/.claude/settings.json
 link "$C/sync-claude"   ~/.local/bin/sync-claude
 grep -q '.local/bin' ~/.zshrc 2>/dev/null || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
-# ae-mcp
-[ -d ~/code/ae-mcp ] || git clone https://github.com/davidmarcrod-ctrl/ae-mcp ~/code/ae-mcp
-(cd ~/code/ae-mcp && npm install --silent && npm run build --silent)
+# MCPs (ae-mcp, blender-mcp): clonar, compilar y registrar en Claude Code y Claude Desktop
+mkdir -p ~/code
+for m in ae-mcp blender-mcp; do
+  [ -d ~/code/$m ] || git clone https://github.com/davidmarcrod-ctrl/$m ~/code/$m
+  (cd ~/code/$m && npm install --silent && npm run build --silent)
+  python3 "$C/register-mcp.py" $m ~/code/$m/dist/index.js "$NODE"
+done
 
-# Registrar ae-mcp en Claude Desktop
-CFG="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-[ -f "$CFG" ] && cp "$CFG" "$CFG.bak-$(date +%F)"
-NODE="$NODE" python3 - "$CFG" <<'PY'
-import json,sys,os
-p=sys.argv[1]; c=json.load(open(p)) if os.path.exists(p) else {}
-c.setdefault("mcpServers",{})["ae-mcp"]={"command":os.environ["NODE"],"args":[os.path.expanduser("~/code/ae-mcp/dist/index.js")]}
-json.dump(c,open(p,"w"),indent=2)
-PY
-echo "✓ ae-mcp registrado. Reinicia Claude Desktop (Cmd+Q)."
+# Add-on MCP Bridge de Blender (necesita Blender cerrado)
+if [ -d /Applications/Blender.app ]; then
+  if pgrep -x Blender >/dev/null; then echo "⚠️  Cierra Blender y ejecuta: cd ~/code/blender-mcp && npm run install-addon"
+  else (cd ~/code/blender-mcp && npm run install-addon --silent); fi
+fi
+echo "✓ Listo. Reinicia Claude (Cmd+Q)."

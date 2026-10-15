@@ -6,18 +6,12 @@ How a session actually runs. Load at session start.
 
 ## Bridge setup (user-side, once per session)
 
-The MCP only works when the Blender MCP server is running.
+blender-mcp talks to the **MCP Bridge** add-on over localhost:9877. The add-on starts by itself with Blender.
 
-1. Open Blender with the project file loaded.
-2. Edit > Preferences > Add-ons > search **Blender MCP** > ensure it is enabled.
-3. In the add-on preferences panel: click **Start MCP Server**.
-4. Status line confirms: "MCP Server running on localhost:9876."
-5. Leave Blender open for the entire session.
-
-Verification prompt (first thing in a new session):
-> "Connect to Blender MCP and tell me what objects are in my current scene."
-
-If Claude returns an error instead of an object list, the server is not running. The user clicks Start MCP Server again. If it still fails, restart Blender.
+1. First call of the session: `bridge_status`.
+2. Blender not running: `launch_blender`, then `open_file` for the project's .blend (it refuses to discard unsaved changes unless told to).
+3. Blender running but no answer: the user clicks Start in the 3D View sidebar (N) › **MCP** panel. If it still fails, restart Blender.
+4. Leave Blender open for the entire session. Each mutating call is one undo step (Cmd+Z).
 
 ---
 
@@ -25,7 +19,7 @@ If Claude returns an error instead of an object list, the server is not running.
 
 Never touch anything before reading the scene. This is not optional.
 
-Run `get_objects_summary` (or equivalent inspection tool) first. Know:
+Run `get_scene_info`, then `list_objects` (filter by type when useful, e.g. `CAMERA`, `LIGHT`). Use `get_property` for anything they don't cover. Know:
 - What objects are in the scene, what they're named, what collections they're in.
 - What materials are assigned and which objects have them.
 - What the camera type is (orthographic or perspective) and its current position.
@@ -65,7 +59,7 @@ Your job is to execute the brief precisely. Don't summarize it. Don't adapt it t
 All iterative feedback happens via EEVEE preview, not Cycles. EEVEE takes seconds; Cycles takes minutes.
 
 After each change:
-1. Trigger a preview render via MCP (set render engine to EEVEE, output to a temp path, render, show the result).
+1. `preview_render` (EEVEE, 50% by default, 16 samples; returns the image and restores the scene's settings). Look at it yourself before showing it. `viewport_screenshot` is cheaper when only layout or framing matters.
 2. Ask the user what's wrong or right.
 3. Translate their description into specific bpy changes. "Looks plastic" means roughness too low. "Too dark" means lights too dim or color too dark. "Shadows too sharp" means lights too small or too far.
 4. Apply changes. Preview again.
@@ -76,7 +70,7 @@ EEVEE vs Cycles difference to flag: EEVEE doesn't compute volumetric materials o
 
 ## Scene audit before final render
 
-Before the user presses F12, run a scene audit:
+Before any final render (`render_animation` or F12), run a scene audit with `run_python`:
 
 ```python
 import bpy
@@ -108,16 +102,15 @@ Common issues to catch:
 
 ---
 
-## F12 handoff
+## Final render handoff
 
-Cycles renders take minutes to hours at high sample counts. Claude cannot hold a connection open for that duration via MCP.
+Cycles renders take minutes to hours. Never render a final on Blender's main thread (`run_python` with `bpy.ops.render.render`): it blocks the UI and the MCP call.
 
 When the scene is ready:
-1. Tell the user the current render settings: engine, resolution, samples, denoising state, output path.
+1. Tell the user the current render settings: frame range, engine, resolution, samples, denoising state, output path (`set_render_settings` to change them).
 2. Confirm everything looks correct from the audit.
-3. Say: "You're ready to render. Press F12."
-
-Do not tell the user to start the render via MCP. Do not attempt to trigger a Cycles render via bpy operator in a way that blocks MCP. The F12 handoff is the correct workflow.
+3. Wait for the user to confirm range, engine and samples. Then `save_file` and `render_animation`: a background Blender renders from a snapshot, the user's Blender stays usable. Report progress with `get_render_status` when asked; don't poll in a loop.
+4. If the user prefers, they press F12 instead.
 
 ---
 

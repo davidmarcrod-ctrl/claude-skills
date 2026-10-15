@@ -17,7 +17,7 @@ Render engine choice, sample counts, denoising, color management. Load before an
 
 Rule: EEVEE for previews during every iteration. Cycles for finals.
 
-Do not tell the user to wait for Cycles via MCP. They press F12.
+Never render Cycles on Blender's main thread. Finals go through `render_animation` (after the user confirms range, engine and samples) or the user's F12. Engine, samples, resolution, fps, view transform and transparency: `set_render_settings`. Passes and EXR output: `setup_render_passes`.
 
 ---
 
@@ -160,11 +160,11 @@ def eevee_preview(output_path="/tmp/eevee_preview.png", res_x=1280, res_y=720):
 eevee_preview()
 ```
 
-After running, read the output image back via MCP and show the result to the user.
+Normally just call `preview_render`, which does this and returns the image. Use the script only for something it doesn't cover (e.g. a fixed output path).
 
 ---
 
-## Pre-render checklist (run before F12)
+## Pre-render checklist (run before `render_animation` or F12)
 
 ```python
 import bpy
@@ -193,5 +193,5 @@ if issues:
     for issue in issues:
         print(f"  - {issue}")
 else:
-    print("All clear. Press F12 to render.")
+    print("All clear. Ready for the final render.")
 ```

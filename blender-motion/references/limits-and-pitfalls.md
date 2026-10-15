@@ -6,15 +6,15 @@ What the Blender MCP can and cannot do. Read before scoping any build.
 
 ## Hard limits: MCP cannot do these
 
-**Full Cycles render.** Cycles renders at meaningful quality take minutes to hours. An MCP tool call will time out long before a 4K/512-sample Cycles render finishes. Never attempt it. The workflow is: set everything up via MCP, audit the scene, hand off to the user to press F12.
+**Full Cycles render inside a tool call.** Cycles renders at meaningful quality take minutes to hours, and main-thread work blocks Blender's UI. Never render a final through `run_python` or `preview_render`. The workflow is: set everything up, audit the scene, get the user's OK on range, engine and samples, then `render_animation` (background process) or the user presses F12.
 
 **Creative decisions.** Claude can execute a brief but cannot define the look. "Make it look good" is not a brief. If the material, lighting, or composition direction is undefined, ask for a reference image before touching anything.
 
 **Fixing broken geometry or topology.** If an object has inverted normals, non-manifold geometry, or topology errors, MCP cannot repair it. Inform the user and tell them what to fix manually in Edit Mode.
 
-**Adding objects not already in the scene.** Claude can modify, duplicate, or reposition objects that exist. It cannot create new mesh objects from scratch via MCP in the same way it can via a full bpy script (though bpy scripts can add primitives). If an object the brief requires is missing, tell the user to add it manually or write a bpy script that adds it as a primitive.
+**Modelling objects that aren't in the scene.** `create_object` adds primitives, empties, cameras, lights and text; `run_python` can build anything procedural. Real modelled assets are not something to improvise: if the brief needs one that's missing, ask the user for it (or a Higgsfield generation, with their OK).
 
-**Real-time viewport manipulation.** MCP does not control the Blender UI directly. It sends Python commands. If a change requires interacting with the 3D viewport (manual vertex editing, interactive sculpting), it cannot be done via MCP.
+**Real-time viewport manipulation.** MCP does not control the Blender UI directly. It sends Python commands (`viewport_screenshot` can only look). If a change requires interacting with the 3D viewport (manual vertex editing, interactive sculpting), it cannot be done via MCP.
 
 ---
 

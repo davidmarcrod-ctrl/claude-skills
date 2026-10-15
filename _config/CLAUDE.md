@@ -47,5 +47,8 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 ## Herramientas
 
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
+- MCP de Blender: `~/code/blender-mcp` (repo `davidmarcrod-ctrl/blender-mcp`), con puente cámara/nulls/renders
+  con AE. Necesita el add-on «MCP Bridge» en Blender (arranca solo; panel N › MCP).
 - Skills: `~/.claude/skills` (repo `davidmarcrod-ctrl/claude-skills`).
-- `sync-claude` (en `~/.local/bin`) baja/sube ambos repos; los hooks lo ejecutan solos al abrir y cerrar sesión.
+- `sync-claude` (en `~/.local/bin`) baja/sube los tres repos (skills, ae-mcp, blender-mcp); los hooks lo ejecutan
+  solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el add-on.

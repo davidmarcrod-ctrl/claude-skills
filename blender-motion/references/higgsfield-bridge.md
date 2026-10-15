@@ -57,7 +57,7 @@ Every bridge generation spends the user's Higgsfield credits. The add-on shows t
 
 The bridge drops real Blender objects into the scene. Treat them like objects the user added by hand: you don't know their names or structure until you read them.
 
-1. Run `get_objects_summary` through the Blender MCP.
+1. Run `list_objects` through blender-mcp.
 2. Diff against the pre-build state. List what was added.
 3. Rename generated objects to match the scene's naming convention. Ask if there isn't one.
 4. Move them into a named collection (e.g. `HF_Blockout`, `HF_Props`, `HF_Character`). This keeps reblocks clean.
@@ -123,7 +123,7 @@ When the layout changes, reblock instead of hand-moving twenty objects.
 
 Video generates a finished clip from the assembled scene. It costs more than stills and takes around a minute.
 
-- Treat it like F12. The user triggers it or explicitly approves it.
+- Treat it like a final render. The user triggers it or explicitly approves it.
 - It does not replace a Cycles final. It's an AI shot built from the scene, not a render of it. Say so if the user seems to expect frame-accurate output.
 - Run the pre-render scene audit from `operational-canon.md` first. A hidden prop still shows up in the result.
 

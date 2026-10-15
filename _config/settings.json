@@ -7,7 +7,7 @@
             "type": "command",
             "command": "$HOME/.local/bin/sync-claude 2>&1 || true",
             "timeout": 120,
-            "statusMessage": "Sincronizando skills y ae-mcp..."
+            "statusMessage": "Sincronizando skills, ae-mcp y blender-mcp..."
           }
         ]
       }
