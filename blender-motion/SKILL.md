@@ -51,6 +51,8 @@ These are Adewale's rules for directing Claude in Blender. Apply them to every s
 5. Do not make creative decisions. If the brief is vague on the look, ask for a reference image. Do not invent a material or lighting treatment.
 6. Higgsfield generations spend the user's credits. Say what you'll generate, wait for a yes, one generation per yes. No variants unless asked.
 7. Audit after every Higgsfield bridge build: `list_objects`, rename, collect. Seedance renders follow the final-render rule (rule 2).
+8. **Ask before anything crosses from Blender to AE.** Before a final render meant for AE, `render_animation`, `import_render_to_ae` or `export_to_ae`: show the user the state in Blender (preview), list what will be sent and how, and wait for an explicit OK. They want to finish adjustments in Blender first. No export without that OK.
+9. **One element per layer, one pass per layer.** As far as possible, each element (ball, confetti, boat, sea...) reaches AE as its own layers: one view layer per element, the other elements as holdout so occlusion stays correct, and passes in `layout: "separate"` so shadows, light and reflections are separate AE layers. Details in `references/ae-bridge.md`.
 
 ## When to load which reference
 

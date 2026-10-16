@@ -26,12 +26,25 @@ Moving cameras, nulls and renders between Blender and AE with blender-mcp. Load 
 
 ---
 
+## The user's routine (mandatory)
+
+1. **Checkpoint before AE.** Nothing goes to AE (final render, `render_animation`, `import_render_to_ae`, `export_to_ae`) until the user has seen the Blender state and said OK. Show a preview, say what elements and passes will be sent, and ask. They prefer to fix things in Blender, not in the comp.
+2. **Elements separate.** Each element in its own collection and its own view layer:
+   - In that view layer, the other elements' collections are **holdout** (`view_layer.layer_collection.children[name].holdout = True`): they punch a transparent hole where they pass in front, so stacking the layers in AE rebuilds the right occlusion.
+   - If an element must still light, reflect in or cast shadows on the others, set those collections to **indirect only** (Cycles) instead of excluding them.
+   - The shadow-catcher floor stays in each view layer that casts shadows on the plate.
+   - Name view layers after the element (`Balon`, `Confeti`...) so file names and AE layers read clearly.
+3. **Passes separate.** `layout: "separate"` for every view layer, so beauty, shadow catcher, AO, light passes, etc. arrive as separate AE layers the user can grade on their own.
+4. In AE, group each element's layers together (one precomp or a labelled block per element), passes above the beauty, switched on/off as `import_render_to_ae` suggests.
+
+`setup_render_passes` and `import_render_to_ae` currently handle one view layer at a time (one File Output node, `MCP Pass Output`). Until they handle several, set the extra view layers and their File Output nodes with `run_python`, and point `import_render_to_ae` at each element's folder.
+
 ## Typical round trip
 
 1. AE shot with a tracked or animated camera → `import_from_ae`.
 2. Build/animate in Blender. Iterate with `preview_render`.
-3. `setup_render_passes` (usually `filmTransparent` on). Audit (`operational-canon.md`).
-4. User confirms range, engine, samples → `render_animation`; check with `get_render_status`.
-5. `import_render_to_ae`. Then hand over to the aftereffects-motion skill.
+3. Elements in their own collections and view layers; `setup_render_passes` with `layout: "separate"` (usually `filmTransparent` on). Audit (`operational-canon.md`).
+4. **Checkpoint with the user** (preview, elements, passes). Then they confirm range, engine and samples → `render_animation`; check with `get_render_status`.
+5. `import_render_to_ae`, one element at a time. Then hand over to the aftereffects-motion skill.
 
 Baking hundreds of frames in `export_to_ae` blocks Blender's UI while it runs. Say so before a long export.

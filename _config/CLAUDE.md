@@ -51,6 +51,16 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   RAM reservada para otras apps: 6 GB (correcto). Este Mac queda optimizado.
 - **El otro Mac:** sin revisar.
 
+## Rutina Blender → After Effects (todos los proyectos)
+
+- **Antes de pasar nada de Blender a After** (render final, `render_animation`, `import_render_to_ae`,
+  `export_to_ae`), pregúntame siempre: enséñame cómo está en Blender y espera mi OK, para hacer allí los
+  ajustes que falten. No se exporta nada sin que yo lo confirme.
+- **Cada elemento en su capa**: en la medida de lo posible, cada elemento sale por separado (p. ej. la pelota
+  y el confeti, capas distintas). En Blender, una view layer por elemento, con los demás como holdout.
+- **Cada pase en su capa**: los pases (sombras, luces, AO, reflejos, profundidad…) llegan a After como capas
+  independientes, para poder trabajar luces o sombras por separado al componer.
+
 ## Herramientas
 
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
