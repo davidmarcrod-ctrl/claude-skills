@@ -22,7 +22,7 @@ The **MCP Bridge** add-on starts by itself with Blender (localhost:9877; panel i
 
 - `export_to_ae`: Blender camera + objects → AE one-node 3D camera + 3D nulls, baked per frame.
 - `import_from_ae`: AE camera (two-node, parented, 3D Camera Tracker) + 3D layers → Blender camera, empties, footage planes.
-- `setup_render_passes`: passes + EXR (`multilayer` with Cryptomatte, or `separate`). Then `render_animation`.
+- `setup_render_passes`: passes + EXR (`multilayer` with Cryptomatte, or `separate`). `setup_element_layers`: one view layer and one folder of per-pass EXRs per element. Then `render_animation`.
 - `import_render_to_ae`: rendered sequences → AE comp, beauty visible, passes above it off with suggested blend modes.
 
 `ppm` (pixels per metre) defaults to 100: use the same value both ways. EXRs are scene-linear, not AgX: in AE use a linear working space/OCIO or interpret as linear. Details in `references/ae-bridge.md`.
@@ -52,7 +52,7 @@ These are Adewale's rules for directing Claude in Blender. Apply them to every s
 6. Higgsfield generations spend the user's credits. Say what you'll generate, wait for a yes, one generation per yes. No variants unless asked.
 7. Audit after every Higgsfield bridge build: `list_objects`, rename, collect. Seedance renders follow the final-render rule (rule 2).
 8. **Ask before anything crosses from Blender to AE.** Before a final render meant for AE, `render_animation`, `import_render_to_ae` or `export_to_ae`: show the user the state in Blender (preview), list what will be sent and how, and wait for an explicit OK. They want to finish adjustments in Blender first. No export without that OK.
-9. **One element per layer, one pass per layer.** As far as possible, each element (ball, confetti, boat, sea...) reaches AE as its own layers: one view layer per element, the other elements as holdout so occlusion stays correct, and passes in `layout: "separate"` so shadows, light and reflections are separate AE layers. Details in `references/ae-bridge.md`.
+9. **One element per layer, one pass per layer.** As far as possible, each element (ball, confetti, boat, sea...) reaches AE as its own layers: `setup_element_layers` (one view layer per element, the other elements as holdout so occlusion stays correct, each pass its own EXR) so shadows, light and reflections are separate AE layers. Details in `references/ae-bridge.md`.
 
 ## When to load which reference
 
