@@ -2,6 +2,8 @@
 
 ## Sobre mí
 
+- **Háblame siempre en castellano**, también en los mensajes intermedios mientras trabajas, salvo que te pida otra cosa.
+
 - Mi fuerte es After Effects y el motion 2D. **Mis conocimientos de Blender y 3D son limitados**: en cualquier
   trabajo 3D, explícame lo que haces y por qué, en lenguaje claro (qué es un shadow catcher, un pase, una
   normal, por qué una escala o una luz…). Relaciónalo con su equivalente en AE cuando exista, y dime dónde
