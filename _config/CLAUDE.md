@@ -32,12 +32,17 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 - **No** uses grupos personalizados (`ccd_sidebar` create_group / move_sessions): cambian la vista a «custom»
   y ocultan las carpetas por proyecto. Si alguna vez cambia la vista, restáurala con `set_view` group_by `project`.
 
+## Nombres de carpetas (desde el 03/11/2026)
+
+- Carpetas numeradas **sin guion**: solo número y nombre (`00 AFTER`, `01 BRUTOS`…), no `00 - AFTER`.
+  Salvo que haga falta otra cosa. Los proyectos anteriores conservan sus nombres.
+
 ## Versionado de los `.aep` (todos los proyectos)
 
 - Guardar versión nueva `_NN` **solo antes de un parche por script** (`run_script` que toca varias capas):
   si falla a mitad, deja cambios a medias. Los cambios pequeños con herramientas sueltas no necesitan versión.
-- En `00 - AFTER` quedan solo la **vigente** y los **hitos aprobados**. Las intermedias se mueven a
-  `00 - AFTER/_OLD` (no se borran). Hacer la limpieza al cerrar cada tanda de cambios y anotar en el
+- En `00 AFTER` quedan solo la **vigente** y los **hitos aprobados**. Las intermedias se mueven a
+  `00 AFTER/_OLD` (no se borran). Hacer la limpieza al cerrar cada tanda de cambios y anotar en el
   `CLAUDE.md` del proyecto qué versión es cada hito.
 
 ## Configuración de After Effects por ordenador

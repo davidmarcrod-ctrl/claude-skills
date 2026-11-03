@@ -17,21 +17,21 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
 1. **Pide lo mínimo** (en una sola pregunta y sin bloquearte si falta algo; lo que falte queda como pendiente):
    cliente, nombre del proyecto, descripción breve, formato de entrega (resolución, fps, aspecto), duración y fecha.
    Comprueba si el cliente ya tiene carpeta (`ls` de la raíz) y reutiliza su nombre exacto.
-2. **Crea las carpetas**: `00 - AFTER`, `01 - BRUTOS`, `02 - AI & PSD` (con subcarpetas `AI` y `PSD`), `03 - IA`,
-   `04 - FOTOS Y TEXTURAS`, `05 - VIDEOS`, `06 - GRAFISMOS`, `07 - SCRIPTS`, `08 - RENDERS`, `09 - REFES & INSP`,
-   `10 - PDFS & DOCS`, `11 - EXPORTS`. Ojo: `02 - AI & PSD/AI` es Illustrator; `03 - IA` es inteligencia artificial.
-   Coloca el material recibido donde toque (AI/PSD en `02`, fuentes y logos en `06 - GRAFISMOS`, metraje de cámara en `01 - BRUTOS`,
-   otros vídeos —stock, material de apoyo, vídeos de campaña— en `05 - VIDEOS`).
-   Esta estructura rige desde el 13/10/2026 (`05 - VIDEOS` añadida entre fotos y grafismos; antes, del 08/10, sin ella); los proyectos anteriores conservan la antigua (no migrarlos sin que se pida).
+2. **Crea las carpetas**: `00 AFTER`, `01 BRUTOS`, `02 AI & PSD` (con subcarpetas `AI` y `PSD`), `03 IA`,
+   `04 FOTOS Y TEXTURAS`, `05 VIDEOS`, `06 GRAFISMOS`, `07 SCRIPTS`, `08 RENDERS`, `09 REFES & INSP`,
+   `10 PDFS & DOCS`, `11 EXPORTS`. Ojo: `02 AI & PSD/AI` es Illustrator; `03 IA` es inteligencia artificial.
+   Coloca el material recibido donde toque (AI/PSD en `02`, fuentes y logos en `06 GRAFISMOS`, metraje de cámara en `01 BRUTOS`,
+   otros vídeos —stock, material de apoyo, vídeos de campaña— en `05 VIDEOS`).
+   Esta estructura rige desde el 03/11/2026: carpetas **sin guion**, solo número y nombre (del 13/10 al 02/11, con guion: `01 - BRUTOS`…; la del 08/10, además, sin `05 - VIDEOS`). Los proyectos anteriores conservan la suya (no migrarlos sin que se pida).
 3. **CLAUDE.md**: copia `assets/CLAUDE.template.md` en la raíz del proyecto y rellena los `{{...}}`
    (`{{PREFIJO}}` = `Proyecto_Cliente` sin espacios; `{{ORDENADOR}}` sale de `scutil --get ComputerName`).
    Lo desconocido se deja como "pendiente" y se añade a Pendientes.
-4. **Scripts base**: copia `assets/project_bins.jsx` en `07 - SCRIPTS/`.
+4. **Scripts base**: copia `assets/project_bins.jsx` en `07 SCRIPTS/`.
 5. **Proyecto de AE** (solo si After Effects está abierto y las herramientas `ae-mcp` están disponibles; si no, díselo y sáltalo):
    - Si el proyecto abierto tiene cambios sin guardar, **no lo toques**: pregunta antes.
    - Crea un proyecto nuevo con `run_script` (`app.newProject()`), crea la comp principal con el formato del brief
      (`create_composition`), ejecuta `project_bins.jsx` con `run_script` y guárdalo como
-     `00 - AFTER/{{PREFIJO}}_01.aep` (`save_project`).
+     `00 AFTER/{{PREFIJO}}_01.aep` (`save_project`).
 6. **Carpeta de la sesión en la app**: la barra lateral agrupa los chats por carpeta de trabajo. Si la sesión
    no está ya en la raíz del proyecto, muévela con `ccd_directory` → `change_directory`. No uses grupos personalizados
    (`ccd_sidebar`): cambian la vista y ocultan las carpetas por proyecto.
@@ -54,8 +54,8 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
 - Versiona los `.aep` con sufijo `_NN`; no sobrescribas una versión a la que el usuario pueda querer volver.
   Guarda versión nueva **solo antes de un parche por script** (si falla a mitad, deja cambios a medias);
   los cambios pequeños con herramientas sueltas no la necesitan.
-- En `00 - AFTER` quedan solo la vigente y los hitos aprobados; las intermedias van a `00 - AFTER/_OLD`
+- En `00 AFTER` quedan solo la vigente y los hitos aprobados; las intermedias van a `00 AFTER/_OLD`
   (no se borran). Limpia al cerrar cada tanda de cambios y apunta los hitos en el `CLAUDE.md`.
-- Los scripts del proyecto van en `07 - SCRIPTS`, con una cabecera que explique qué hacen y si son idempotentes
+- Los scripts del proyecto van en `07 SCRIPTS`, con una cabecera que explique qué hacen y si son idempotentes
   o de un solo uso.
 - Durante el trabajo, mantén el `CLAUDE.md` al día (estado, decisiones, pendientes, registro de sesiones).
