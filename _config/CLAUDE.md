@@ -56,7 +56,11 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   hardware y caché en reposo, bien. **Problema:** la caché de disco estaba en `PHILIPS Cache AE` (USB, ~39 MB/s).
   Hecho (03/10): caché en `/Library/Caches/AE Disk Cache` (SSD interno, ~4 GB/s), 80 GB.
   RAM reservada para otras apps: 6 GB (correcto). Este Mac queda optimizado.
-- **El otro Mac:** sin revisar.
+- **Mac Studio M3 Ultra, 96 GB** (oficina; revisado el 10/11/2026, macOS 27.2.1, AE 27.0; también tiene AE 2026).
+  GPU Metal 4 (60 núcleos), MFR activado, auto-save cada 20 min, permiso de scripts para archivos/red activado.
+  Caché de disco en la ruta por defecto (`~/Library/Caches/Adobe/After Effects/27.0`, SSD interno, ~6 GB/s
+  de escritura). JARL RED aquí va por USB a ~960 MB/s de escritura. RAM reservada para otras apps: 24 GB
+  (AE usa 72). Pendiente: comprobar `gpuAccelType` con un proyecto abierto. Este Mac queda bien.
 
 ## Rutina Blender → After Effects (todos los proyectos)
 
