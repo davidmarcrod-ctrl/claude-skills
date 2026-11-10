@@ -1,12 +1,12 @@
 #!/bin/zsh
-# sync-claude          -> baja cambios de skills, ae-mcp y blender-mcp (y recompila si hace falta).
+# sync-claude          -> baja cambios de skills, ae-mcp, blender-mcp y premiere-mcp (y recompila si hace falta).
 #                         Si a este Mac le falta algún MCP, lo clona, compila y registra solo.
-# sync-claude push "m" -> sube los cambios locales de los tres repos con el mensaje "m"
+# sync-claude push "m" -> sube los cambios locales de los cuatro repos con el mensaje "m"
 export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 C="$HOME/.claude/skills/_config"
 GH="https://github.com/davidmarcrod-ctrl"
 MCPS=(ae-mcp blender-mcp)
-REPOS=("$HOME/.claude/skills" "$HOME/code/ae-mcp" "$HOME/code/blender-mcp")
+REPOS=("$HOME/.claude/skills" "$HOME/code/ae-mcp" "$HOME/code/blender-mcp" "$HOME/code/premiere-mcp")
 
 if [[ "$1" == "push" ]]; then
   msg="${2:-Actualización desde $(scutil --get ComputerName)}"
@@ -20,6 +20,23 @@ if [[ "$1" == "push" ]]; then
 fi
 
 build() { (cd "$1" && npm install --silent && npm run build --silent) }
+# premiere-mcp no se compila: solo dependencias del servidor (server/)
+build_premiere() { (cd "$1/server" && npm install --omit=dev --silent --no-audit --no-fund) }
+
+# Panel CEP «Claude MCP Bridge» de Premiere: enlace en la carpeta de extensiones + permitir extensiones sin firmar.
+# Premiere lo detecta al arrancar (si está abierto, reinícialo).
+premiere_panel() {
+  local r="$HOME/code/premiere-mcp"
+  local apps=(/Applications/Adobe\ Premiere\ Pro*(N))
+  [[ -d "$r/cep-panel" ]] && (( ${#apps} )) || return
+  local ext="$HOME/Library/Application Support/Adobe/CEP/extensions"
+  for v in 9 10 11 12 13; do
+    [[ "$(defaults read com.adobe.CSXS.$v PlayerDebugMode 2>/dev/null)" == 1 ]] || defaults write com.adobe.CSXS.$v PlayerDebugMode 1
+  done
+  [[ "$(readlink "$ext/com.pmcp.bridge")" == "$r/cep-panel" ]] && return
+  mkdir -p "$ext" && rm -rf "$ext/com.pmcp.bridge" && ln -s "$r/cep-panel" "$ext/com.pmcp.bridge" \
+    && echo "✓ Panel Claude MCP Bridge instalado en Premiere (reinícialo y abre Window › Extensions › Claude MCP Bridge)"
+}
 
 # El add-on de Blender solo se puede activar con Blender cerrado (si no, Blender pisa las preferencias al salir).
 blender_addon() {
@@ -45,6 +62,16 @@ for m in $MCPS; do
 done
 blender_addon
 
+# premiere-mcp: estructura distinta (server/index.js, sin compilar) y se registra como «premiere»
+r="$HOME/code/premiere-mcp"
+if [[ ! -d "$r" ]]; then
+  echo "== premiere-mcp (nuevo en este Mac)"
+  mkdir -p "$HOME/code"
+  { git clone -q "$GH/premiere-mcp" "$r" && build_premiere "$r" && echo "Clonado ✓ → reinicia Claude (Cmd+Q)"; } || echo "❌ No se pudo instalar premiere-mcp"
+fi
+[[ -f "$r/server/index.js" ]] && python3 "$C/register-mcp.py" premiere "$r/server/index.js" "$(command -v node)"
+premiere_panel
+
 for r in $REPOS; do
   [[ -d "$r" ]] || continue
   echo "== ${r:t}"
@@ -56,5 +83,7 @@ for r in $REPOS; do
   echo "Actualizado ✓"
   if [[ -f "$r/package.json" ]]; then
     build "$r" && echo "Recompilado ✓ → reinicia Claude (Cmd+Q)"
+  elif [[ -f "$r/server/package.json" ]]; then
+    build_premiere "$r" && echo "Dependencias al día ✓ → reinicia Claude (Cmd+Q) y reabre el panel en Premiere"
   fi
 done

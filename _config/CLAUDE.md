@@ -78,8 +78,14 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
 - MCP de Blender: `~/code/blender-mcp` (repo `davidmarcrod-ctrl/blender-mcp`), con puente cámara/nulls/renders
   con AE. Necesita el add-on «MCP Bridge» en Blender (arranca solo; panel N › MCP).
+- MCP de Premiere: `~/code/premiere-mcp` (repo privado `davidmarcrod-ctrl/premiere-mcp`, 10/11/2026), registrado
+  como `premiere`. Necesita Premiere abierto con un proyecto y el panel Window › Extensions › Claude MCP Bridge
+  (puerto 8847). Probado en Premiere 27.0. Arreglado respecto al zip original: palabra reservada `in` en
+  `host/index.jsx` (rompía ExtendScript) y el panel carga el `.jsx` él solo con error detallado (`/health`).
+  Ojo: el `.jsx` debe ser ES3 (sin palabras reservadas como nombre de campo, sin sintaxis moderna).
 - **Xcode 27.2** instalado en los dos Mac (10/11/2026), activo con `xcode-select`. Necesario desde macOS 27 para
   compilar SwiftUI (`@State` es una macro cuyo complemento solo trae Xcode).
 - Skills: `~/.claude/skills` (repo `davidmarcrod-ctrl/claude-skills`).
-- `sync-claude` (en `~/.local/bin`) baja/sube los tres repos (skills, ae-mcp, blender-mcp); los hooks lo ejecutan
-  solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el add-on.
+- `sync-claude` (en `~/.local/bin`) baja/sube los cuatro repos (skills, ae-mcp, blender-mcp, premiere-mcp); los hooks
+  lo ejecutan solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el
+  add-on de Blender o el panel de Premiere (luego hay que reiniciar Premiere).
