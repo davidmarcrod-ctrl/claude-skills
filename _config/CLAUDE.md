@@ -56,6 +56,11 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   hardware y caché en reposo, bien. **Problema:** la caché de disco estaba en `PHILIPS Cache AE` (USB, ~39 MB/s).
   Hecho (03/10): caché en `/Library/Caches/AE Disk Cache` (SSD interno, ~4 GB/s), 80 GB.
   RAM reservada para otras apps: 6 GB (correcto). Este Mac queda optimizado.
+  **10/11/2026:** macOS 27.2.1 «Golden Gate» y AE 2027 (27.0). Ajustes migrados desde 26.5: caché en
+  `/Library/Caches/AE Disk Cache` (carpeta recreada, la borró la actualización), 100 GB; auto-save cada 20 min,
+  5 versiones. Añadida a mano la aceleración por hardware (decode/encode) en `MC Prefs` (copia `.bak-20261110`).
+  Revisado: MFR auto (10 % CPU reservado), RAM 6 GB para otras apps, caché SSD ~4,3 GB/s, proyectos nuevos en
+  Metal (1814). Este Mac queda optimizado para AE 27. Blender no está instalado en este Mac.
 - **El otro Mac:** sin revisar.
 
 ## Rutina Blender → After Effects (todos los proyectos)
@@ -73,6 +78,8 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
 - MCP de Blender: `~/code/blender-mcp` (repo `davidmarcrod-ctrl/blender-mcp`), con puente cámara/nulls/renders
   con AE. Necesita el add-on «MCP Bridge» en Blender (arranca solo; panel N › MCP).
+- **Xcode 27.2** instalado en los dos Mac (10/11/2026), activo con `xcode-select`. Necesario desde macOS 27 para
+  compilar SwiftUI (`@State` es una macro cuyo complemento solo trae Xcode).
 - Skills: `~/.claude/skills` (repo `davidmarcrod-ctrl/claude-skills`).
 - `sync-claude` (en `~/.local/bin`) baja/sube los tres repos (skills, ae-mcp, blender-mcp); los hooks lo ejecutan
   solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el add-on.
