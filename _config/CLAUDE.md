@@ -77,6 +77,10 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
 - MCP de Blender: `~/code/blender-mcp` (repo `davidmarcrod-ctrl/blender-mcp`), con puente cámara/nulls/renders
   con AE. Necesita el add-on «MCP Bridge» en Blender (arranca solo; panel N › MCP).
+- MCP de ComfyUI: oficial `comfy-mcp` (PyPI, con `comfy-cli`) en el entorno `~/.local/share/comfy-mcp/venv`,
+  apuntando a la instalación de Comfy Desktop (`~/ComfyUI-Installs/ComfyUI/ComfyUI`, puerto 8188). Para generar,
+  Comfy Desktop tiene que estar abierto. Instalado en el Mac Studio (10/11/2026); en el portátil, pendiente
+  (no lo instala `sync-claude`).
 - Skills: `~/.claude/skills` (repo `davidmarcrod-ctrl/claude-skills`).
 - `sync-claude` (en `~/.local/bin`) baja/sube los tres repos (skills, ae-mcp, blender-mcp); los hooks lo ejecutan
   solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el add-on.
