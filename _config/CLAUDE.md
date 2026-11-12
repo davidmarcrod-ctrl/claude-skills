@@ -29,6 +29,8 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 - La barra lateral de Code está agrupada **por proyecto**: cada carpeta es la carpeta de trabajo del chat.
   Por eso, cada proyecto nuevo debe tener su propio chat **en la carpeta del proyecto**. Si un chat
   arranca en otra carpeta, muévelo con `ccd_directory` → `change_directory` a la raíz del proyecto.
+- **Modelo y esfuerzo:** al empezar un chat o una tarea/fase de dificultad distinta, aplica la skill
+  `modelo-esfuerzo` y dime en una línea qué modelo y esfuerzo conviene (solo si hay que cambiar).
 - **No** uses grupos personalizados (`ccd_sidebar` create_group / move_sessions): cambian la vista a «custom»
   y ocultan las carpetas por proyecto. Si alguna vez cambia la vista, restáurala con `set_view` group_by `project`.
 
