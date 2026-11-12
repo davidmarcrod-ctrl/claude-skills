@@ -56,6 +56,11 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   hardware y caché en reposo, bien. **Problema:** la caché de disco estaba en `PHILIPS Cache AE` (USB, ~39 MB/s).
   Hecho (03/10): caché en `/Library/Caches/AE Disk Cache` (SSD interno, ~4 GB/s), 80 GB.
   RAM reservada para otras apps: 6 GB (correcto). Este Mac queda optimizado.
+  **10/11/2026:** macOS 27.2.1 «Golden Gate» y AE 2027 (27.0). Ajustes migrados desde 26.5: caché en
+  `/Library/Caches/AE Disk Cache` (carpeta recreada, la borró la actualización), 100 GB; auto-save cada 20 min,
+  5 versiones. Añadida a mano la aceleración por hardware (decode/encode) en `MC Prefs` (copia `.bak-20261110`).
+  Revisado: MFR auto (10 % CPU reservado), RAM 6 GB para otras apps, caché SSD ~4,3 GB/s, proyectos nuevos en
+  Metal (1814). Este Mac queda optimizado para AE 27. Blender no está instalado en este Mac.
 - **Mac Studio M3 Ultra, 96 GB** (oficina; revisado el 10/11/2026, macOS 27.2.1, AE 27.0; también tiene AE 2026).
   GPU Metal 4 (60 núcleos), MFR activado, auto-save cada 20 min, permiso de scripts para archivos/red activado.
   Caché de disco en la ruta por defecto (`~/Library/Caches/Adobe/After Effects/27.0`, SSD interno, ~6 GB/s
@@ -81,6 +86,14 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   apuntando a la instalación de Comfy Desktop (`~/ComfyUI-Installs/ComfyUI/ComfyUI`, puerto 8188). Para generar,
   Comfy Desktop tiene que estar abierto. Instalado en el Mac Studio (10/11/2026); en el portátil, pendiente
   (no lo instala `sync-claude`).
+- MCP de Premiere: `~/code/premiere-mcp` (repo privado `davidmarcrod-ctrl/premiere-mcp`, 10/11/2026), registrado
+  como `premiere`. Necesita Premiere abierto con un proyecto y el panel Window › Extensions › Claude MCP Bridge
+  (puerto 8847). Probado en Premiere 27.0. Arreglado respecto al zip original: palabra reservada `in` en
+  `host/index.jsx` (rompía ExtendScript) y el panel carga el `.jsx` él solo con error detallado (`/health`).
+  Ojo: el `.jsx` debe ser ES3 (sin palabras reservadas como nombre de campo, sin sintaxis moderna).
+- **Xcode 27.2** instalado en los dos Mac (10/11/2026), activo con `xcode-select`. Necesario desde macOS 27 para
+  compilar SwiftUI (`@State` es una macro cuyo complemento solo trae Xcode).
 - Skills: `~/.claude/skills` (repo `davidmarcrod-ctrl/claude-skills`).
-- `sync-claude` (en `~/.local/bin`) baja/sube los tres repos (skills, ae-mcp, blender-mcp); los hooks lo ejecutan
-  solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el add-on.
+- `sync-claude` (en `~/.local/bin`) baja/sube los cuatro repos (skills, ae-mcp, blender-mcp, premiere-mcp); los hooks
+  lo ejecutan solos al abrir y cerrar sesión. Si a un Mac le falta un MCP, lo clona, compila, registra e instala el
+  add-on de Blender o el panel de Premiere (luego hay que reiniciar Premiere).
