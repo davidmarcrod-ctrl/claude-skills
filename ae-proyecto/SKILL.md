@@ -17,9 +17,12 @@ Si `/Volumes/JARL RED` no está montado, para y pide que se conecte el disco.
 1. **Pide lo mínimo** (en una sola pregunta y sin bloquearte si falta algo; lo que falte queda como pendiente):
    cliente, nombre del proyecto, descripción breve, formato de entrega (resolución, fps, aspecto), duración y fecha.
    Comprueba si el cliente ya tiene carpeta (`ls` de la raíz) y reutiliza su nombre exacto.
-2. **Crea las carpetas**: `00 AFTER`, `01 BRUTOS`, `02 AI & PSD` (con subcarpetas `AI` y `PSD`), `03 IA`,
-   `04 FOTOS Y TEXTURAS`, `05 VIDEOS`, `06 GRAFISMOS`, `07 SCRIPTS`, `08 RENDERS`, `09 REFES & INSP`,
-   `10 PDFS & DOCS`, `11 EXPORTS`. Ojo: `02 AI & PSD/AI` es Illustrator; `03 IA` es inteligencia artificial.
+2. **Carpetas bajo demanda** (desde el 23/11/2026): **no** crees toda la estructura de golpe. Cada carpeta se crea
+   cuando llega material para ella, para no dejar carpetas vacías. Al alta, solo las que se vayan a poblar ya
+   (normalmente `00 AFTER` y `07 SCRIPTS`, más las del material recibido). Los nombres y números son fijos
+   aunque falten carpetas intermedias: `00 AFTER`, `01 BRUTOS`, `02 AI & PSD` (subcarpetas `AI` y `PSD`, también
+   bajo demanda), `03 IA`, `04 FOTOS Y TEXTURAS`, `05 VIDEOS`, `06 GRAFISMOS`, `07 SCRIPTS`, `08 RENDERS`,
+   `09 REFES & INSP`, `10 PDFS & DOCS`, `11 EXPORTS`. Ojo: `02 AI & PSD/AI` es Illustrator; `03 IA` es inteligencia artificial.
    Coloca el material recibido donde toque (AI/PSD en `02`, fuentes y logos en `06 GRAFISMOS`, metraje de cámara en `01 BRUTOS`,
    otros vídeos —stock, material de apoyo, vídeos de campaña— en `05 VIDEOS`).
    Esta estructura rige desde el 03/11/2026: carpetas **sin guion**, solo número y nombre (del 13/10 al 02/11, con guion: `01 - BRUTOS`…; la del 08/10, además, sin `05 - VIDEOS`). Los proyectos anteriores conservan la suya (no migrarlos sin que se pida).

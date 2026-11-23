@@ -38,6 +38,8 @@ Por tanto, cuando trabajes en una carpeta de proyecto que tenga `CLAUDE.md`:
 
 - Carpetas numeradas **sin guion**: solo número y nombre (`00 AFTER`, `01 BRUTOS`…), no `00 - AFTER`.
   Salvo que haga falta otra cosa. Los proyectos anteriores conservan sus nombres.
+- **Carpetas bajo demanda (desde el 23/11/2026):** no crear toda la estructura de golpe. Cada carpeta se crea
+  cuando llega material para poblarla, para no tener carpetas vacías (la numeración estándar se mantiene).
 
 ## Versionado de los `.aep` (todos los proyectos)
 

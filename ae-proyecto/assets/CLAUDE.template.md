@@ -19,6 +19,8 @@ After Effects se controla con el MCP local `ae-mcp` (skills: `aftereffects-motio
 
 Raíz: `{{RUTA}}`
 
+Las carpetas se crean **cuando llega material** para ellas (no hay carpetas vacías); la numeración es fija.
+
 | Carpeta | Contenido |
 |---|---|
 | `00 AFTER` | Proyectos `.aep` versionados: `{{PREFIJO}}_NN.aep` (la más alta es la vigente; aquí solo la vigente y los hitos, el resto en `_OLD`) |
