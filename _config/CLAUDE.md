@@ -64,7 +64,7 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
   `/Library/Caches/AE Disk Cache` (carpeta recreada, la borró la actualización), 100 GB; auto-save cada 20 min,
   5 versiones. Añadida a mano la aceleración por hardware (decode/encode) en `MC Prefs` (copia `.bak-20261110`).
   Revisado: MFR auto (10 % CPU reservado), RAM 6 GB para otras apps, caché SSD ~4,3 GB/s, proyectos nuevos en
-  Metal (1814). Este Mac queda optimizado para AE 27. Blender no está instalado en este Mac.
+  Metal (1814). Este Mac queda optimizado para AE 27. **25/11/2026:** Blender 5.3.0 instalado, con el MCP de Blender y el add-on MCP Bridge funcionando. Revisado: Metal, Cycles en GPU (24 núcleos), AgX. Hecho: caché de vídeo a 8 GB y `startup.blend` con Cycles en GPU, denoiser en GPU y Persistent Data. Blender queda optimizado en este Mac.
 - **Mac Studio M3 Ultra, 96 GB** (oficina; revisado el 10/11/2026, macOS 27.2.1, AE 27.0; también tiene AE 2026).
   GPU Metal 4 (60 núcleos), MFR activado, auto-save cada 20 min, permiso de scripts para archivos/red activado.
   Caché de disco en la ruta por defecto (`~/Library/Caches/Adobe/After Effects/27.0`, SSD interno, ~6 GB/s
