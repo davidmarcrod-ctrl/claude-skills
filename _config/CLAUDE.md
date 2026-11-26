@@ -81,6 +81,13 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 - **Cada pase en su capa**: los pases (sombras, luces, AO, reflejos, profundidad…) llegan a After como capas
   independientes, para poder trabajar luces o sombras por separado al componer.
 
+## Plugins propios de After Effects (desde el 26/11/2026)
+
+- Todos los plugins que creemos van juntos: categoría **«Jarl»** en el menú (Efecto › Jarl › …; solo la J
+  en mayúscula) e instalados en `/Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore/Jarl/`
+  (sin sudo; lo leen todas las versiones de AE). El match name de cada plugin no cambia nunca (rompería
+  proyectos guardados). Primer plugin: FilmGrain (`~/code/FilmGrain`).
+
 ## Herramientas
 
 - MCP de After Effects: `~/code/ae-mcp` (repo `davidmarcrod-ctrl/ae-mcp`).
