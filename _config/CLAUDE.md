@@ -86,7 +86,10 @@ Metal = 1814) y velocidad de los discos con `dd`. No edites las preferencias con
 - Todos los plugins que creemos van juntos: categoría **«Jarl»** en el menú (Efecto › Jarl › …; solo la J
   en mayúscula) e instalados en `/Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore/Jarl/`
   (sin sudo; lo leen todas las versiones de AE). El match name de cada plugin no cambia nunca (rompería
-  proyectos guardados). Primer plugin: FilmGrain (`~/code/FilmGrain`).
+  proyectos guardados). Primer plugin: FilmGrain (`~/code/FilmGrain`). También Relight (`~/code/Relight`) y
+  **CorridorKey AE** (`~/code/corridorkey-ae`, repo privado `davidmarcrod-ctrl/corridorkey-ae`; keyer de croma con IA,
+  panel Window › CorridorKey AE.jsx + Efecto › Jarl › CorridorKey AE). CorridorKey no lo sincroniza `sync-claude`:
+  `git pull` a mano y relanzar `install.sh`. Instalado en el Mac Studio y en el portátil (27/11/2026).
 
 ## Herramientas
 
